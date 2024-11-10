@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9851d0c965659ed4a985ffd1c41b780b, type: 3}
+  m_Name: Level00Config
+  m_EditorClassIdentifier: 
+  numObstacles: 444
+  playerEnergy: 333
+  playerStartPosition: {x: 0, y: 0, z: -10}
+  obstaclePrefab: {fileID: 3502990151793326960, guid: 8d40c77b53dcf75449ecf4c0f5f3992c, type: 3}
