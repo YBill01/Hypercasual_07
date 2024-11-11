@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -33,27 +34,43 @@ public class InputController : MonoBehaviour
 
 	private void Update()
 	{
-		_isPointerOverGameObject = false;
-
-#if !UNITY_EDITOR && (UNITY_ANDROID || UNITY_IOS)
-		if (Input.touchCount > 0 && Input.GetTouch(0).phase == UnityEngine.TouchPhase.Began)
-		{
-			_isPointerOverGameObject = EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId);
-		}
-#else
 		_isPointerOverGameObject = EventSystem.current.IsPointerOverGameObject();
-#endif
 	}
 
 	private void OnAttackButton(InputAction.CallbackContext context)
 	{
 		bool value = context.ReadValueAsButton();
 
+#if !UNITY_EDITOR && (UNITY_ANDROID || UNITY_IOS)
+		if (IsPointerOverGameObject())
+		{
+			return;
+		}
+#else
 		if (_isPointerOverGameObject)
 		{
 			return;
 		}
+#endif
 
 		OnAttack?.Invoke(value);
+	}
+
+	private bool IsPointerOverGameObject()
+	{
+		if (Touchscreen.current.primaryTouch.value.phase == UnityEngine.InputSystem.TouchPhase.Began)
+		{
+			PointerEventData pointerEventData = new PointerEventData(EventSystem.current)
+			{
+				position = Touchscreen.current.primaryTouch.position.ReadValue()
+			};
+
+			List<RaycastResult> results = new List<RaycastResult>();
+			EventSystem.current.RaycastAll(pointerEventData, results);
+
+			return results.Count > 0;
+		}
+
+		return false;
 	}
 }
